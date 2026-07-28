@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRASA — Cozinha de Fogo &amp; Alma</title>
+<meta name="description" content="BRASA — Alta gastronomia brasileira sobre fogo. Reservas, menu degustação e experiências únicas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0b09;
+  --bg2:#14110e;
+  --bg3:#1c1814;
+  --gold:#c9a56a;
+  --gold-light:#e3c894;
+  --cream:#f2ece1;
+  --muted:#9a9084;
+  --line:rgba(201,165,106,.22);
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:#0d0b09}
+h1,h2,h3,.serif{font-family:var(--serif)}
+
+/* ---------- PRELOADER ---------- */
+#preloader{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .8s ease,visibility .8s}
+#preloader.done{opacity:0;visibility:hidden}
+#preloader .logo{font-family:var(--serif);font-size:2.6rem;letter-spacing:.45em;color:var(--cream);animation:pulse 1.6s ease infinite}
+#preloader .bar{width:160px;height:1px;background:rgba(255,255,255,.12);overflow:hidden}
+#preloader .bar i{display:block;height:100%;width:0;background:var(--gold);animation:load 1.6s ease forwards}
+@keyframes load{to{width:100%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* ---------- NAV ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:26px 5vw;transition:background .4s,padding .4s,box-shadow .4s}
+nav.scrolled{background:rgba(13,11,9,.92);backdrop-filter:blur(14px);padding:14px 5vw;box-shadow:0 1px 0 var(--line)}
+nav .brand{font-family:var(--serif);font-size:1.5rem;letter-spacing:.4em;font-weight:600}
+nav .brand span{color:var(--gold)}
+nav ul{display:flex;gap:38px;list-style:none}
+nav ul a{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);position:relative;transition:color .3s}
+nav ul a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .35s}
+nav ul a:hover{color:var(--cream)}
+nav ul a:hover::after{width:100%}
+.btn{display:inline-block;border:1px solid var(--gold);color:var(--gold);padding:13px 34px;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;transition:.35s;background:transparent;cursor:pointer;font-family:var(--sans)}
+.btn:hover{background:var(--gold);color:#0d0b09}
+.btn.solid{background:var(--gold);color:#0d0b09}
+.btn.solid:hover{background:var(--gold-light);border-color:var(--gold-light)}
+.nav-cta{padding:11px 26px}
+#burger{display:none;background:none;border:none;cursor:pointer;z-index:120;width:34px;height:24px;position:relative}
+#burger i{position:absolute;left:0;width:100%;height:1.5px;background:var(--cream);transition:.35s}
+#burger i:nth-child(1){top:2px}#burger i:nth-child(2){top:11px}#burger i:nth-child(3){top:20px}
+#burger.open i:nth-child(1){top:11px;transform:rotate(45deg)}
+#burger.open i:nth-child(2){opacity:0}
+#burger.open i:nth-child(3){top:11px;transform:rotate(-45deg)}
+#mobileMenu{position:fixed;inset:0;background:rgba(13,11,9,.98);z-index:110;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;opacity:0;visibility:hidden;transition:.45s}
+#mobileMenu.open{opacity:1;visibility:visible}
+#mobileMenu a{font-family:var(--serif);font-size:2rem;color:var(--cream);letter-spacing:.08em}
+#mobileMenu a:hover{color:var(--gold)}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero .bg{position:absolute;inset:-10%;background:url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2000&auto=format&fit=crop') center/cover;filter:brightness(.38) saturate(.9);will-change:transform}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(13,11,9,.85) 100%)}
+.hero .inner{position:relative;z-index:2;padding:0 6vw;max-width:1000px}
+.hero .eyebrow{font-size:.75rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:26px}
+.hero h1{font-size:clamp(3.2rem,9vw,7.5rem);line-height:1.02;font-weight:500;letter-spacing:.02em}
+.hero h1 em{font-style:italic;color:var(--gold-light)}
+.hero p{margin:28px auto 42px;max-width:520px;color:var(--muted);font-size:1rem}
+.hero .actions{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase}
+.scroll-hint i{width:1px;height:52px;background:linear-gradient(var(--gold),transparent);animation:drop 2s ease infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- MARQUEE ---------- */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;overflow:hidden;background:var(--bg2)}
+.marquee .track{display:flex;gap:60px;width:max-content;animation:scroll 28s linear infinite;white-space:nowrap}
+.marquee span{font-family:var(--serif);font-size:1.4rem;font-style:italic;color:var(--muted);display:flex;align-items:center;gap:60px}
+.marquee b{color:var(--gold);font-weight:400}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- GENERIC SECTION ---------- */
+section{padding:120px 6vw;position:relative}
+.label{font-size:.7rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.label::before{content:"";width:44px;height:1px;background:var(--gold)}
+h2.title{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.1;font-weight:500}
+h2.title em{font-style:italic;color:var(--gold-light)}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(42px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}
+
+/* ---------- SOBRE ---------- */
+.about{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;max-width:1300px;margin:0 auto}
+.about .imgs{position:relative}
+.about .imgs .main{width:82%;aspect-ratio:3/3.8;object-fit:cover;filter:saturate(.9)}
+.about .imgs .float{position:absolute;right:0;bottom:-60px;width:46%;aspect-ratio:1;object-fit:cover;border:6px solid var(--bg);filter:saturate(.9)}
+.about .imgs .stamp{position:absolute;top:-40px;right:6%;width:120px;height:120px;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.about p{color:var(--muted);margin-top:26px;max-width:520px}
+.stats{display:flex;gap:48px;margin-top:48px;flex-wrap:wrap}
+.stats div strong{font-family:var(--serif);font-size:2.8rem;color:var(--gold-light);font-weight:500;display:block;line-height:1}
+.stats div span{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.sig{margin-top:44px;display:flex;align-items:center;gap:20px}
+.sig img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+.sig .name{font-family:var(--serif);font-size:1.25rem;font-style:italic;color:var(--cream)}
+.sig .role{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- MENU ---------- */
+.menu-section{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.menu-head{max-width:1300px;margin:0 auto 60px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{background:transparent;border:1px solid var(--line);color:var(--muted);padding:11px 26px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:.3s;font-family:var(--sans)}
+.tabs button.active,.tabs button:hover{border-color:var(--gold);color:var(--gold)}
+.menu-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px 70px}
+.dish{display:flex;gap:20px;align-items:center;padding:22px 10px;border-bottom:1px solid rgba(255,255,255,.06);transition:.3s;cursor:default}
+.dish:hover{background:rgba(201,165,106,.05);padding-left:18px}
+.dish img{width:74px;height:74px;object-fit:cover;border-radius:50%;flex-shrink:0;filter:saturate(.95)}
+.dish .info{flex:1}
+.dish .row{display:flex;align-items:baseline;gap:14px}
+.dish h3{font-size:1.45rem;font-weight:500;white-space:nowrap}
+.dish .dots{flex:1;border-bottom:1px dotted rgba(201,165,106,.4);transform:translateY(-5px)}
+.dish .price{font-family:var(--serif);font-size:1.35rem;color:var(--gold);font-style:italic}
+.dish p{font-size:.82rem;color:var(--muted);margin-top:4px}
+.dish .tag{display:inline-block;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);padding:2px 9px;margin-left:10px;vertical-align:middle}
+.menu-cta{text-align:center;margin-top:64px}
+.menu-cta small{display:block;margin-top:16px;color:var(--muted);font-size:.75rem}
+
+/* ---------- EXPERIÊNCIA / PARALLAX ---------- */
+.exp{padding:0;height:70vh;min-height:480px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.exp .bg{position:absolute;inset:-15%;background:url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2000&auto=format&fit=crop') center/cover fixed;filter:brightness(.32)}
+@supports (-webkit-touch-callout:none){.exp .bg{background-attachment:scroll}}
+.exp .content{position:relative;z-index:2;text-align:center;padding:0 6vw}
+.exp h2{font-size:clamp(2.2rem,5vw,4rem);font-weight:500;font-style:italic}
+.exp p{color:rgba(242,236,225,.75);max-width:560px;margin:20px auto 34px}
+
+/* ---------- GALERIA ---------- */
+.gallery{max-width:1400px;margin:0 auto}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:230px;gap:14px;margin-top:60px}
+.gal-grid a{overflow:hidden;position:relative;display:block}
+.gal-grid a:nth-child(1){grid-row:span 2}
+.gal-grid a:nth-child(4){grid-row:span 2}
+.gal-grid a:nth-child(6){grid-column:span 2}
+.gal-grid img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s;filter:saturate(.9)}
+.gal-grid a:hover img{transform:scale(1.07);filter:saturate(1.1)}
+.gal-grid a::after{content:"+";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:2.4rem;color:var(--gold-light);background:rgba(13,11,9,.45);opacity:0;transition:.4s}
+.gal-grid a:hover::after{opacity:1}
+
+/* ---------- DEPOIMENTOS ---------- */
+.testi{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+.testi .quote-mark{font-family:var(--serif);font-size:6rem;color:var(--gold);line-height:.4;display:block;margin-bottom:30px}
+.testi blockquote{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.3rem);font-style:italic;font-weight:400;max-width:860px;margin:0 auto;line-height:1.4;min-height:150px;transition:opacity .5s}
+.testi .who{margin-top:30px;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+.testi .who small{display:block;color:var(--muted);letter-spacing:.18em;margin-top:6px}
+.testi .nav-dots{margin-top:40px;display:flex;gap:12px;justify-content:center}
+.testi .nav-dots button{width:34px;height:2px;border:none;background:rgba(255,255,255,.15);cursor:pointer;transition:.3s}
+.testi .nav-dots button.active{background:var(--gold)}
+.stars{color:var(--gold);letter-spacing:.3em;margin-bottom:24px;font-size:.85rem}
+
+/* ---------- RESERVA ---------- */
+.reserve{display:grid;grid-template-columns:1fr 1fr;max-width:1300px;margin:0 auto;gap:70px;align-items:center}
+.reserve .photo{aspect-ratio:4/5;background:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1600&auto=format&fit=crop') center/cover;position:relative}
+.reserve .photo::after{content:"";position:absolute;inset:18px;border:1px solid rgba(242,236,225,.35);pointer-events:none}
+.reserve form{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.2);color:var(--cream);padding:12px 2px;font-family:var(--sans);font-size:.95rem;transition:border-color .3s;border-radius:0;-webkit-appearance:none}
+.field select option{background:var(--bg3);color:var(--cream)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold)}
+.field input::placeholder,.field textarea::placeholder{color:rgba(154,144,132,.6)}
+.reserve .btn{grid-column:1/-1;justify-self:start;margin-top:10px}
+#formMsg{grid-column:1/-1;color:var(--gold-light);font-family:var(--serif);font-style:italic;font-size:1.15rem;display:none}
+.reserve .contact-mini{margin-top:38px;display:flex;gap:44px;flex-wrap:wrap}
+.reserve .contact-mini strong{display:block;font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.reserve .contact-mini span{color:var(--muted);font-size:.9rem}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);background:var(--bg2)}
+.foot-grid{max-width:1300px;margin:0 auto;padding:80px 6vw 50px;display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:50px}
+.foot-grid .brand{font-family:var(--serif);font-size:2rem;letter-spacing:.4em;font-weight:600}
+.foot-grid .brand span{color:var(--gold)}
+.foot-grid p{color:var(--muted);font-size:.85rem;margin-top:16px;max-width:300px}
+.foot-grid h4{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-family:var(--sans);font-weight:500}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.foot-grid ul a,.foot-grid ul li{color:var(--muted);font-size:.85rem;transition:color .3s}
+.foot-grid ul a:hover{color:var(--cream)}
+.socials{display:flex;gap:14px;margin-top:24px}
+.socials a{width:38px;height:38px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.7rem;letter-spacing:.05em;transition:.3s}
+.socials a:hover{border-color:var(--gold);color:var(--gold)}
+.copy{border-top:1px solid rgba(255,255,255,.06);padding:24px 6vw;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.72rem;color:var(--muted);letter-spacing:.06em}
+#toTop{position:fixed;right:26px;bottom:26px;width:46px;height:46px;border:1px solid var(--gold);background:rgba(13,11,9,.85);color:var(--gold);cursor:pointer;font-size:1rem;opacity:0;visibility:hidden;transition:.35s;z-index:90}
+#toTop.show{opacity:1;visibility:visible}
+#toTop:hover{background:var(--gold);color:#0d0b09}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:1024px){
+  .menu-grid{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr;gap:90px}
+  .reserve{grid-template-columns:1fr}
+  .reserve .photo{aspect-ratio:16/9}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  nav ul,.nav-cta{display:none}
+  #burger{display:block}
+  section{padding:90px 6vw}
+  .gal-grid{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
+  .gal-grid a:nth-child(6){grid-column:span 2}
+  .reserve form{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr;gap:36px}
+  .stats{gap:30px}
+  .about .imgs .float{bottom:-30px}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="logo">BRASA</div>
+  <div class="bar"><i></i></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="brand">BRA<span>SA</span></a>
+  <ul>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="#reservas" class="btn nav-cta">Reservar Mesa</a>
+  <button id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+</nav>
+<div id="mobileMenu">
+  <a href="#sobre">Sobre</a>
+  <a href="#menu">Menu</a>
+  <a href="#experiencia">Experiência</a>
+  <a href="#galeria">Galeria</a>
+  <a href="#reservas">Reservar Mesa</a>
+  <a href="#contato">Contato</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="bg" id="heroBg"></div>
+  <div class="inner">
+    <p class="eyebrow reveal">Alta Gastronomia sobre Fogo · Desde 2012</p>
+    <h1 class="reveal d1">O sabor nasce<br>da <em>brasa</em></h1>
+    <p class="reveal d2">Cozinha autoral brasileira, ingredientes de pequenos produtores e o fogo como protagonista. Uma experiência para todos os sentidos.</p>
+    <div class="actions reveal d3">
+      <a href="#reservas" class="btn solid">Reservar Mesa</a>
+      <a href="#menu" class="btn">Ver o Menu</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Role<i></i></div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>Menu Degustação <b>✦</b> Carta de Vinhos Premiada <b>✦</b> Fogo de Chão <b>✦</b> Ingredientes do Cerrado <b>✦</b> Chef Premiado <b>✦</b> Coquetelaria Autoral <b>✦</b></span>
+    <span>Menu Degustação <b>✦</b> Carta de Vinhos Premiada <b>✦</b> Fogo de Chão <b>✦</b> Ingredientes do Cerrado <b>✦</b> Chef Premiado <b>✦</b> Coquetelaria Autoral <b>✦</b></span>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="about">
+    <div class="imgs reveal">
+      <img class="main" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1400&auto=format&fit=crop" alt="Salão do restaurante BRASA">
+      <img class="float" src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=900&auto=format&fit=crop" alt="Cozinha em ação">
+      <svg class="stamp" viewBox="0 0 120 120">
+        <defs><path id="circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+        <text fill="#c9a56a" font-size="11.5" letter-spacing="3.5" font-family="Inter,sans-serif"><textPath href="#circ">BRASA · COZINHA DE FOGO · DESDE 2012 ·</textPath></text>
+        <text x="60" y="67" text-anchor="middle" fill="#e3c894" font-size="20" font-family="Cormorant Garamond,serif" font-style="italic">✦</text>
+      </svg>
+    </div>
+    <div>
+      <p class="label reveal">Nossa História</p>
+      <h2 class="title reveal d1">Tradição, fogo e <em>criatividade</em> em cada prato</h2>
+      <p class="reveal d2">No coração da cidade, a BRASA celebra a cozinha brasileira contemporânea. Trabalhamos exclusivamente com fogo — parrilla, defumação e fogo de chão — e ingredientes de pequenos produtores locais, colhidos no auge da estação.</p>
+      <p class="reveal d2">Cada menu conta uma história: do mar ao cerrado, da tradição familiar à técnica contemporânea. Aqui, o tempo desacelera e a mesa vira memória.</p>
+      <div class="stats reveal d3">
+        <div><strong data-count="12">0</strong><span>Anos de história</span></div>
+        <div><strong data-count="48">0</strong><span>Prêmios &amp; menções</span></div>
+        <div><strong data-count="120">0</strong><span>Rótulos na adega</span></div>
+      </div>
+      <div class="sig reveal d3">
+        <img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?q=80&w=400&auto=format&fit=crop" alt="Chef" onerror="this.src='https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=400&auto=format&fit=crop'">
+        <div>
+          <div class="name">Rafael Duarte</div>
+          <div class="role">Chef Executivo &amp; Fundador</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="menu-section">
+  <div class="menu-head">
+    <div>
+      <p class="label reveal">Sabores da Casa</p>
+      <h2 class="title reveal d1">Nosso <em>Menu</em></h2>
+    </div>
+    <div class="tabs reveal d2" id="tabs">
+      <button class="active" data-tab="entradas">Entradas</button>
+      <button data-tab="principais">Principais</button>
+      <button data-tab="sobremesas">Sobremesas</button>
+      <button data-tab="drinks">Drinks &amp; Vinhos</button>
+    </div>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+  <div class="menu-cta reveal">
+    <a class="btn" href="#reservas">Menu Degustação · 7 tempos — R$ 320</a>
+    <small>Harmonização de vinhos opcional · +R$ 180 por pessoa</small>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA PARALLAX -->
+<section class="exp" id="experiencia">
+  <div class="bg"></div>
+  <div class="content">
+    <p class="label reveal" style="justify-content:center">A Experiência</p>
+    <h2 class="reveal d1">"Onde o fogo encontra a alma da cozinha brasileira"</h2>
+    <p class="reveal d2">Balcão do chef com 8 lugares de frente para o fogo, adega climatizada e um salão desenhado para noites inesquecíveis.</p>
+    <a href="#reservas" class="btn reveal d3">Viva essa experiência</a>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section id="galeria">
+  <div class="gallery">
+    <p class="label reveal">Momentos</p>
+    <h2 class="title reveal d1">Galeria <em>BRASA</em></h2>
+    <div class="gal-grid reveal d2">
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Corte na brasa"></a>
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop" alt="Prato autoral"></a>
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1200&auto=format&fit=crop" alt="Coquetelaria"></a>
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1200&auto=format&fit=crop" alt="Salão"></a>
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop" alt="Prato fresco"></a>
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1600&auto=format&fit=crop" alt="Ambiente do restaurante"></a>
+      <a href="#galeria"><img loading="lazy" src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=1200&auto=format&fit=crop" alt="Sobremesa"></a>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="testi">
+  <div class="reveal">
+    <span class="quote-mark">"</span>
+    <div class="stars">★ ★ ★ ★ ★</div>
+    <blockquote id="quoteText"></blockquote>
+    <div class="who" id="quoteWho"></div>
+    <div class="nav-dots" id="quoteDots"></div>
+  </div>
+</section>
+
+<!-- RESERVAS -->
+<section id="reservas">
+  <div class="reserve">
+    <div class="photo reveal"></div>
+    <div>
+      <p class="label reveal">Reservas</p>
+      <h2 class="title reveal d1">Garanta a sua <em>mesa</em></h2>
+      <form id="resForm" class="reveal d2">
+        <div class="field"><label>Nome</label><input type="text" placeholder="Seu nome completo" required></div>
+        <div class="field"><label>Telefone</label><input type="tel" placeholder="(11) 90000-0000" required></div>
+        <div class="field"><label>Data</label><input type="date" required></div>
+        <div class="field"><label>Horário</label>
+          <select required>
+            <option value="">Selecione</option>
+            <option>19:00</option><option>19:30</option><option>20:00</option>
+            <option>20:30</option><option>21:00</option><option>21:30</option>
+          </select>
+        </div>
+        <div class="field"><label>Pessoas</label>
+          <select required>
+            <option value="">Selecione</option>
+            <option>2 pessoas</option><option>3 pessoas</option><option>4 pessoas</option>
+            <option>5 pessoas</option><option>6+ pessoas</option>
+          </select>
+        </div>
+        <div class="field"><label>Ocasião</label>
+          <select>
+            <option value="">Opcional</option>
+            <option>Aniversário</option><option>Jantar romântico</option>
+            <option>Negócios</option><option>Comemoração</option>
+          </select>
+        </div>
+        <div class="field full"><label>Observações</label><textarea rows="2" placeholder="Restrições alimentares, preferências..."></textarea></div>
+        <button type="submit" class="btn solid">Confirmar Reserva</button>
+        <p id="formMsg">✦ Reserva recebida! Entraremos em contato para confirmar. Até breve na BRASA.</p>
+      </form>
+      <div class="contact-mini reveal d3">
+        <div><strong>Horários</strong><span>Ter–Sáb · 19h às 00h<br>Dom · 12h às 17h</span></div>
+        <div><strong>Reservas por telefone</strong><span>(11) 3456-7890<br>WhatsApp (11) 98765-4321</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contato">
+  <div class="foot-grid">
+    <div>
+      <div class="brand">BRA<span>SA</span></div>
+      <p>Cozinha de fogo e alma brasileira. Uma experiência gastronômica que transforma ingredientes em memórias.</p>
+      <div class="socials">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="TripAdvisor">TA</a>
+      </div>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#reservas">Reservas</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Horários</h4>
+      <ul>
+        <li>Ter–Qui · 19h–23h</li>
+        <li>Sex–Sáb · 19h–00h</li>
+        <li>Domingo · 12h–17h</li>
+        <li>Segunda · Fechado</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Onde Estamos</h4>
+      <ul>
+        <li>Rua das Oliveiras, 248</li>
+        <li>Jardins · São Paulo, SP</li>
+        <li>contato@brasarestaurante.com.br</li>
+        <li>(11) 3456-7890</li>
+      </ul>
+    </div>
+  </div>
+  <div class="copy">
+    <span>© 2026 BRASA Restaurante. Todos os direitos reservados.</span>
+    <span>Site demonstrativo · Desenvolvido para apresentação</span>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="Voltar ao topo">↑</button>
+
+<script>
+/* ---------- MENU DATA ---------- */
+const MENU = {
+  entradas:[
+    {n:"Pão de fermentação natural",p:"28",d:"Manteiga de garrafa defumada e flor de sal",img:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=400&auto=format&fit=crop"},
+    {n:"Burrata na brasa",p:"52",d:"Tomates confitados, pesto de manjericão e pães tostados",img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400&auto=format&fit=crop",tag:"Vegetariano"},
+    {n:"Tartar de wagyu",p:"68",d:"Gema curada, alcaparras fritas e chips de mandioquinha",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400&auto=format&fit=crop",tag:"Da casa"},
+    {n:"Polvo grelhado",p:"74",d:"Purê de batata baroa defumada e vinagrete de pimenta de cheiro",img:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=400&auto=format&fit=crop"},
+    {n:"Croquete de costela 12h",p:"42",d:"Aioli de páprica defumada e picles da horta",img:"https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=400&auto=format&fit=crop"},
+    {n:"Ostras na brasa",p:"58",d:"Meia dúzia, manteiga de ervas e limão-cravo tostado",img:"https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=400&auto=format&fit=crop"}
+  ],
+  principais:[
+    {n:"Ancho fogo de chão",p:"128",d:"400g maturado 30 dias, chimichurri e batatas na cinza",img:"https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=400&auto=format&fit=crop",tag:"Assinatura"},
+    {n:"Peixe do dia na folha de bananeira",p:"98",d:"Pirão de brasa, farofa de castanhas e vinagrete de mangaba",img:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=400&auto=format&fit=crop"},
+    {n:"Galeto orgânico defumado",p:"86",d:"Glaceado no melado de cana, purê de milho e couve crocante",img:"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=400&auto=format&fit=crop"},
+    {n:"Risoto de cogumelos tostados",p:"79",d:"Cogumelos da serra, brie maçaricado e óleo de trufas",img:"https://images.unsplash.com/photo-1476124369491-e7addf5db371?q=80&w=400&auto=format&fit=crop",tag:"Vegetariano"},
+    {n:"Costela 12 horas",p:"112",d:"Cozida lentamente na brasa, banana-da-terra e farofa amanteigada",img:"https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop"},
+    {n:"Moqueca de fogo",p:"104",d:"Frutos do mar, leite de coco fresco, dendê e arroz de coco",img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400&auto=format&fit=crop"}
+  ],
+  sobremesas:[
+    {n:"Abacaxi tostado na brasa",p:"36",d:"Sorvete de tapioca, crumble de castanha e calda de rapadura",img:"https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=400&auto=format&fit=crop",tag:"Assinatura"},
+    {n:"Petit gâteau de chocolate 70%",p:"38",d:"Sorvete de baunilha do cerrado e crocante de cacau",img:"https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=400&auto=format&fit=crop"},
+    {n:"Queijo canastra & goiabada de corte",p:"32",d:"O clássico Romeu e Julieta com queijo maçaricado",img:"https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?q=80&w=400&auto=format&fit=crop"},
+    {n:"Pudim de leite defumado",p:"29",d:"Receita de família com toque de fumaça e calda de café",img:"https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=400&auto=format&fit=crop"}
+  ],
+  drinks:[
+    {n:"Brasa Sour",p:"38",d:"Cachaça envelhecida, limão tostado, mel de engenho e espuma cítrica",img:"https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=400&auto=format&fit=crop",tag:"Autoral"},
+    {n:"Negroni defumado",p:"42",d:"Defumado na hora com lascas de carvalho",img:"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=400&auto=format&fit=crop"},
+    {n:"Caipirinha de frutas do cerrado",p:"34",d:"Cagaita, pequi doce ou cajuzinho — pergunte a fruta do dia",img:"https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=400&auto=format&fit=crop"},
+    {n:"Taça de vinho · seleção do sommelier",p:"39",d:"Rótulos selecionados da nossa adega com 120+ vinhos",img:"https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=400&auto=format&fit=crop"}
+  ]
+};
+
+const grid=document.getElementById('menuGrid');
+function renderMenu(cat){
+  grid.style.opacity=0;
+  setTimeout(()=>{
+    grid.innerHTML=MENU[cat].map(i=>`
+      <div class="dish">
+        <img loading="lazy" src="${i.img}" alt="${i.n}">
+        <div class="info">
+          <div class="row"><h3>${i.n}${i.tag?`<span class="tag">${i.tag}</span>`:''}</h3><span class="dots"></span><span class="price">R$ ${i.p}</span></div>
+          <p>${i.d}</p>
+        </div>
+      </div>`).join('');
+    grid.style.transition='opacity .4s';
+    grid.style.opacity=1;
+  },200);
+}
+renderMenu('entradas');
+document.getElementById('tabs').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderMenu(e.target.dataset.tab);
+});
+
+/* ---------- DEPOIMENTOS ---------- */
+const QUOTES=[
+  {t:"Simplesmente a melhor experiência gastronômica da cidade. O balcão do chef é imperdível — cada prato é um espetáculo.",w:"Mariana Costa",r:"Crítica Gastronômica · Revista Sabor"},
+  {t:"O menu degustação harmonizado foi o ponto alto do nosso aniversário de casamento. Serviço impecável do início ao fim.",w:"Pedro & Luísa Andrade",r:"Clientes desde 2018"},
+  {t:"A costela de 12 horas derrete na boca. Um restaurante que respeita o ingrediente e honra o fogo. Voltarei sempre.",w:"Carlos Menezes",r:"Guia Gastronômico SP"}
+];
+let qi=0;
+const qt=document.getElementById('quoteText'),qw=document.getElementById('quoteWho'),qd=document.getElementById('quoteDots');
+QUOTES.forEach((_,i)=>{
+  const b=document.createElement('button');
+  b.onclick=()=>showQuote(i);
+  qd.appendChild(b);
+});
+function showQuote(i){
+  qi=i;
+  qt.style.opacity=0;
+  setTimeout(()=>{
+    qt.textContent=QUOTES[i].t;
+    qw.innerHTML=`${QUOTES[i].w}<small>${QUOTES[i].r}</small>`;
+    qt.style.opacity=1;
+  },300);
+  qd.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===i));
+}
+showQuote(0);
+setInterval(()=>showQuote((qi+1)%QUOTES.length),6000);
+
+/* ---------- PRELOADER ---------- */
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('preloader').classList.add('done'),1400));
+setTimeout(()=>document.getElementById('preloader').classList.add('done'),3500);
+
+/* ---------- NAV / SCROLL ---------- */
+const nav=document.getElementById('nav'),toTop=document.getElementById('toTop'),heroBg=document.getElementById('heroBg');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  nav.classList.toggle('scrolled',y>60);
+  toTop.classList.toggle('show',y>700);
+  if(y<window.innerHeight)heroBg.style.transform=`translateY(${y*.35}px) scale(1.05)`;
+},{passive:true});
+toTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+/* ---------- MOBILE MENU ---------- */
+const burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu');
+burger.onclick=()=>{burger.classList.toggle('open');mm.classList.toggle('open')};
+mm.querySelectorAll('a').forEach(a=>a.onclick=()=>{burger.classList.remove('open');mm.classList.remove('open')});
+
+/* ---------- REVEAL ON SCROLL ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- COUNTERS ---------- */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target,target=+el.dataset.count;let cur=0;
+  const step=Math.max(1,Math.round(target/50));
+  const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t)}el.textContent=cur},30);
+  cio.unobserve(el);
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+/* ---------- FORM ---------- */
+document.getElementById('resForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  document.getElementById('formMsg').style.display='block';
+  e.target.querySelectorAll('input,select,textarea').forEach(f=>f.value='');
+  setTimeout(()=>document.getElementById('formMsg').style.display='none',6000);
+});
+</script>
+</body>
+</html>
